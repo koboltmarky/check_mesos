@@ -25,8 +25,8 @@ my $warning_treshold=0.8;
 my $result = GetOptions (
  						"help|?" 	=> \$help,
  						"V"     	=> \my $version,
- 						"c=i"     => \$critical_treshold,
- 						"w=i"     => \$warning_treshold,
+ 						"c=f"     => \$critical_treshold,
+ 						"w=f"     => \$warning_treshold,
  						"H=s{2}" 	=> \@zkMasterArray, 
 						"p=s" 		=> \$mesosMasterPort,
 						"C=s"			=> \$check, 
@@ -86,7 +86,7 @@ sub getMesosMaster {
 #
 sub check_mesos {
  	my ($data,$check) = @_;
- 	if ($data->{'master/'.$check.'_percent'} < $warning_treshold) {
+ 	if ($data->{'master/'.$check.'_percent'} < $warning_treshold && $data->{'master/'.$check.'_percent'} < $critical_treshold) {
   	print "OK. $check capacity is good. Capacity: ".$data->{'master/'.$check.'_percent'}."|$check=".$data->{'master/'.$check.'_percent'}."\%;$warning_treshold;$critical_treshold; \n";
    	exit $ERRORS{"OK"}; 
  	}
